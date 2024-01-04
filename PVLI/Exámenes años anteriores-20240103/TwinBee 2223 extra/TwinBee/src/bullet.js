@@ -1,9 +1,10 @@
+export default class Bullet extends Phaser.GameObjects.Sprite {
 
-export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        super(scene, x, y, 'bullet', { key: 'Bullet' });
+        super(scene, x, y, 'bullet');
 
-        this.setOrigin(0.5, 0.5)
+        this.setOrigin(0.5, 0.5);
+        this.setDepth(1);
 
         // Agregar el sprite al juego
         scene.add.existing(this);
@@ -12,25 +13,44 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         // Configurar las propiedades de las físicas, si es necesario
-        this.setCollideWorldBounds(true); // Choca co los bordes del mundo
+        this.body.setCollideWorldBounds();
+        //this.body.setSize(6, 6, true); // Para que la caja de colision sea igual al sprite.
+
+        this.scene.add.existing(this); // Lo metemos en la escena.
+
 
         // Evento que detecta cuando choca con los limites del mapa
-        this.on('worldbounds', () => {
-            console.log("ha salido la bala");
-            this.setActive(false).setVisible(false);
-        });
+        //this.on('worldbounds', () => this.deactivate());
 
     }
 
-    activate(x, y) {
-        // Cambia posicion
-        this.x = x;
-        this.y = y;
+    // Desactiva la bala
+    deactivate() {
+        //console.log("desactivar bala");
+        this.setActive(false).setVisible(false);
+    }
 
-        // Activar y mostrar la bala
+    // Activa la bala
+    activate(x, y) {
+        //Cambio de posicion
+        this.setPosition(x, y)
+
+        //Activa visibilidad
         this.setActive(true).setVisible(true);
 
-        // Asignar la velocidad de la bala
-        this.setVelocityY(-250);
+        //Cambia velocidades (importante para los power ups)
+        this.body.velocity.y = -250;
+        //this.body.velocity.x = 0;
+    }
+
+    preUpdate(t, dt) {
+        // No se por que se hace pero Pablo me ha dicho que se hace
+        super.preUpdate(t, dt);
+
+        // Salida de los limites
+        if (this.y <= 0) {
+            //console.log(this)
+            this.deactivate();
+        }
     }
 }

@@ -1,10 +1,9 @@
-
-
-export default class Player extends Phaser.Physics.Arcade.Sprite {
+export default class Bullet extends Phaser.GameObjects.Sprite {
 
     constructor(scene, x, y, player) {
-        super(scene, x, y, 'ship' + player, { key: 'player' + player });
+        super(scene, x, y, 'ship' + player);
 
+        this.setDepth(2);
         this.setOrigin(0.5, 0)
 
         // Agregar el sprite al juego
@@ -14,20 +13,18 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         // Configurar las propiedades de las físicas, si es necesario
-        this.setCollideWorldBounds(true);
+        this.body.setCollideWorldBounds(true);
 
         // Input de teclas
         this.teclas;
-        this.playerKeys(player)
+        this.playerKeys(player);
 
         // Contador disparos
-        this.maxShootTime = 3
+        this.maxShootTime = 1;
         this.elapsedShootTime = this.maxShootTime;
 
         // Evento que detecta cuando choca con los limites del mapa
-        this.on('worldbounds', () => {
-            console.log("ha salido la bala");
-        });
+        
 
     }
 
@@ -55,9 +52,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.elapsedShootTime = this.maxShootTime;
             console.log("DISPARO");
             this.scene.shoot(this.x, this.y)
-        }else{
-            this.elapsedShootTime -= (dt/1000);
+        } else {
+            this.elapsedShootTime -= (dt / 1000);
         }
+        //console.log(this.x + "/" + this.y)
     }
 
     // Asignacion de las teclas segun el jugador que sea

@@ -1,12 +1,11 @@
 import Player from "./player.js";
 import Bullet from "./bullet.js";
+import EnemyGen from "./enemyGen.js";
 
 export default class Level extends Phaser.Scene {
     constructor() {
         super({ key: 'Level' });
 
-        // Setting los limites del mundo
-        this.physics.world.setBounds(0, 0, 800, 600);
     }
 
     init(data) {
@@ -14,25 +13,32 @@ export default class Level extends Phaser.Scene {
     }
 
     create() {
+        // Setting los limites del mundo
+        this.physics.world.setBounds(0, 0, 256, 256);
+
         // Añadir imagen de fondo.
-        this.background = this.add.image(this.cameras.main.centerX, 376, 'background').setOrigin(0.5, 1);
+        this.background = this.add.image(this.cameras.main.centerX, 376, 'background').setOrigin(0.5, 1).setDepth(0);
 
         //Creacion de naves.
         this.bees = []; // Array vacio de players
         this.loadPlayers();
 
+        //Pool de balas con grupo
         // Crear un grupo para la pool de balas
-        this.bullets = this.physics.add.group({
+        this.bulletsPool = this.physics.add.group({
             classType: Bullet, // Clase de los elementos
             maxSize: 100, // Maximo de elementos
-            runChildUpdate: false // En true ejecuta los metodos updates de los elementos
+            runChildUpdate: true // En true ejecuta los metodos updates de los elementos
         });
 
         // Crear balas iniciales en la pool
         for (var i = 0; i < 100; i++) {
-            let bullet = this.bullets.get(this, 0, 0);
+            let bullet = new Bullet(this, 0, 0);
+            this.bulletsPool.add(bullet);
             bullet.setActive(false).setVisible(false);
         }
+
+        this.enemyGenerator = new EnemyGen(this);
     }
 
     update(t, dt) {
@@ -40,6 +46,9 @@ export default class Level extends Phaser.Scene {
         for (let i = 0; i < this.bees.length; i++) {
             this.bees[i].update(dt);
         }
+
+        // Actualiza el generado
+        this.enemyGenerator.update(dt);
     }
 
     // Creacion de los players
@@ -55,12 +64,11 @@ export default class Level extends Phaser.Scene {
     // Dispara una bala
     shoot(x, y) {
         //coge una bala de la pool
-        let bullet = this.bullets.get();
+        let bullet = this.bulletsPool.get();
 
         if (bullet) {
-            // Activa la bala
             bullet.activate(x, y);
         }
-        
+
     }
 }
