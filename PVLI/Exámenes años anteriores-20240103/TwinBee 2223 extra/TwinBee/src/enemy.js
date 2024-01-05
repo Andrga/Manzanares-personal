@@ -42,14 +42,14 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     update(){
         if(this.y> this.scene.cameras.main.worldView.bottom){
-            console.log("ABAJO");
+           // console.log("ABAJO");
             this.deactivate();
         }
     }
 
     //Metodo para cuando colisiona con otro objeto
     collideado(){
-        console.log("Collideado Enemy");
+        //console.log("Collideado Enemy");
         //this.body.setEnable(false);  // Desactivar completamente el cuerpo de colisión
         this.deactivate();
     }    

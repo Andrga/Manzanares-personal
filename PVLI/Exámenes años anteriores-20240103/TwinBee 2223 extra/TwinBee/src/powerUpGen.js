@@ -20,7 +20,11 @@ export default class PowerUpGen {
         //  ---Evento de tiempo para hacer tu propio contador y reloj---
         this.timeToNewPowerUp = 0;
 
-        this.time.addEvent({
+
+    }
+/*
+    startCountdown() {
+        this.scene.time.addEvent({
             delay: this.elapsedTime, // tiempo que dura el contador
             callback: () => {       // Funcion cuando pasa el tiempo del delay
                 this.timeToAppear();
@@ -29,11 +33,18 @@ export default class PowerUpGen {
             callbackScope: this, // Donde se propaga el evento
             loop: true // Para que se haga continuamente.
         });
-    }
+    }*/
 
     update(dt) {
+        //Contador para que aparezca nuevo enemigo
+        if (this.elapsedTime <= 0) {
+            this.powerUpAppear();
+            this.timeToAppear();
+        } else {
+            this.elapsedTime -= dt / 1000;
+        }
 
-        // Updates de los enemigos
+        // Updates de los powerups
         for (var i = 0; i < this.powerUpPool.length; i++) {
             this.powerUpPool[i].update();
         }
@@ -45,7 +56,7 @@ export default class PowerUpGen {
     }
 
     // Apatece el nuevo enemigo
-    PowerUpAppear() {
+    powerUpAppear() {
 
         //console.log(this.oldPowerUp);
         // Activar el nuevo enemigo

@@ -24,8 +24,8 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         this.maxShootTime = 1;
         this.elapsedShootTime = this.maxShootTime;
 
-        // Evento que detecta cuando choca con los limites del mapa
-        
+        // Cantidad de powerups recogidos
+        this.powerups = 0;
 
     }
 
@@ -51,12 +51,31 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         // Disparo
         if (this.teclas.disparo.isDown && this.elapsedShootTime <= 0) {
             this.elapsedShootTime = this.maxShootTime;
+            this.shoot();
             console.log("DISPARO");
-            this.scene.shoot(this.x, this.y)
         } else {
             this.elapsedShootTime -= (dt / 1000);
         }
-        //console.log(this.x + "/" + this.y)
+    }
+
+    shoot() {
+        switch (this.powerups) {
+            case 0:
+                this.scene.shoot(this.x, this.y, 0)
+                break;
+            case 1:
+                this.scene.shoot(this.x - 3, this.y, -2)
+                this.scene.shoot(this.x + 3, this.y, 2)
+                break;
+            default:
+                this.scene.shoot(this.x - 6, this.y, -7)
+                this.scene.shoot(this.x - 3, this.y, 0)
+                this.scene.shoot(this.x + 3, this.y, 0)
+                this.scene.shoot(this.x + 6, this.y, 7)
+                break;
+
+        }
+
     }
 
     // Asignacion de las teclas segun el jugador que sea
@@ -82,18 +101,19 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         }
     }
 
-    win(){ 
-        this.scene.tweens.add({    
-            targets: this,             // El objeto que se animará
-            y: -10,                        // La posición final en el eje X
-            duration: 3000,                // Duración de la animación en milisegundos
-            ease: 'Linear',                // Función de easing (puedes cambiar a 'Ease' diferente)
-            repeat: 0        
-        })
+    getPowerUp() {
+        if (this.powerups > 2) {
+            // reduce la cadencia de disparo
+            if (this.maxShootTime > 0.4) {
+                this.maxShootTime -= 0.2;
+            }
+        } else {
+            this.powerups++;
+        }
     }
 
     //Metodo para cuando colisiona con otro objeto
-    collideado(){
+    collideado() {
         console.log("collideado player");
 
         // Desactiva al player
@@ -103,6 +123,23 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         this.setActive(false).setVisible(false);
 
         // Metodo que gestiona la perdida
-        this.scene.lose();
+        this.scene.deadPlayers++;
+
+        if (this.scene.deadPlayers <= 0) {
+            this.scene.lose();
+        }
+    }
+
+
+    win() {
+        this.body.setCollideWorldBounds(false);
+        this.setActive(false);
+        this.scene.tweens.add({
+            targets: this,             // El objeto que se animará
+            y: -10,                        // La posición final en el eje X
+            duration: 3000,                // Duración de la animación en milisegundos
+            ease: 'Linear',                // Función de easing (puedes cambiar a 'Ease' diferente)
+            repeat: 0
+        })
     }
 }

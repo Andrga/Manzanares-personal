@@ -27,21 +27,23 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
     // Desactiva la bala
     deactivate() {
         //console.log("desactivar bala");
-        this.setPosition(0,0);
+        this.setPosition(0, 0);
         this.setActive(false).setVisible(false);
     }
 
     // Activa la bala
-    activate(x, y) {
+    activate(x, y, desviacion) {
         //Cambio de posicion
         this.setPosition(x, y)
-
+        
         //Activa visibilidad
         this.setActive(true).setVisible(true);
-
-        //Cambia velocidades (importante para los power ups)
+        
+        //Cambia velocidades
         this.body.velocity.y = -60;
-        //this.body.velocity.x = 0;
+        this.body.velocity.x = desviacion;
+
+        console.log(this);
     }
 
     preUpdate(t, dt) {
@@ -56,7 +58,7 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
     }
 
     //Metodo para cuando colisiona con otro objeto
-    collideado(){
+    collideado() {
         console.log("Collideado bullet");
         this.deactivate();
 

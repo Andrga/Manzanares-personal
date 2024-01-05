@@ -15,6 +15,7 @@ export default class Level extends Phaser.Scene {
 
     create() {
         this.end = false;
+        this.deadPlayers = 0;
 
         // Setting los limites del mundo
         this.physics.world.setBounds(0, 0, 256, 256);
@@ -53,6 +54,7 @@ export default class Level extends Phaser.Scene {
         // Deteccion de colisiones
         this.physics.add.collider(this.bulletsPool, this.enemyGenerator.enemyPool, (bullet, enemy) => this.collisionHandler(bullet, enemy));
         this.physics.add.collider(this.bees, this.enemyGenerator.enemyPool, (bee, enemy) => this.collisionHandler(bee, enemy));
+        this.physics.add.collider(this.bees, this.powerUpGenerator.powerUpPool, (bee, powerUp) => this.colisionPowerUp(bee, powerUp));
     }
 
     update(t, dt) {
@@ -60,7 +62,7 @@ export default class Level extends Phaser.Scene {
             if (this.background.y >= 1536) {
                 this.win();
             } else {
-                this.background.y += 10;
+                this.background.y += 0.5;
             }
 
             // Update de las naves
@@ -68,8 +70,10 @@ export default class Level extends Phaser.Scene {
                 this.bees[i].update(dt);
             }
 
-            // Actualiza el generado
+            // Actualiza los generadores
             this.enemyGenerator.update(dt);
+            this.powerUpGenerator.update(dt);
+
         }
     }
 
@@ -84,16 +88,19 @@ export default class Level extends Phaser.Scene {
     }
 
     // Dispara una bala
-    shoot(x, y) {
+    shoot(x, y, desviacion) {
         //coge una bala de la pool
         let bullet = this.bulletsPool.get();
 
         if (bullet) {
-            bullet.activate(x, y);
+            bullet.activate(x, y, desviacion);
         }
 
     }
-
+    colisionPowerUp(player, powerUp){
+        powerUp.collideado();
+        player.getPowerUp();
+    }
     collisionHandler(obj1, obj2) {
 
         if (obj1.active && obj2.active) {
