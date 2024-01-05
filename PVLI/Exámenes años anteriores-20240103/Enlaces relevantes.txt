@@ -1,0 +1,4 @@
+--Crear y cargar un tilemap
+https://medium.com/@michaelwesthadley/modular-game-worlds-in-phaser-3-tilemaps-1-958fc7e6bbd6
+--Ejemplos de phaser para tilemaps
+https://phaser.io/examples/v3/category/tilemap

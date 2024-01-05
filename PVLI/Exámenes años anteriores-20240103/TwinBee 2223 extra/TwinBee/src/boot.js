@@ -23,6 +23,8 @@ export default class Boot extends Phaser.Scene {
             frameWidth: 16,  // Ancho de cada frame en la hoja de sprites
             frameHeight: 16  // Altura de cada frame en la hoja de sprites
         });
+
+        // Sonidos
     }
 
     create() {
@@ -85,6 +87,8 @@ export default class Boot extends Phaser.Scene {
             frameRate: 10,              // Velocidad de la animación (frames por segundo)
             repeat: -1                  // -1 para que la animación se repita indefinidamente
         });
+
+
 
         this.scene.start("Title");
     }
