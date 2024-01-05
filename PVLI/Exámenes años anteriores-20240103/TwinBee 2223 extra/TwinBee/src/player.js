@@ -19,6 +19,7 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         // Input de teclas
         this.teclas;
         this.playerKeys(player);
+        this.numPlayer = player;
 
         // Contador disparos
         this.maxShootTime = 1;
@@ -42,19 +43,41 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         // Teclas horizontales
         if (this.teclas.derecha.isDown) {
             this.body.velocity.x = 75;
+
+            //Animacion
+            this.anims.play('rightNave' + this.numPlayer);
         } else if (this.teclas.izquierda.isDown) {
             this.body.velocity.x = -75;
+
+            //Animacion
+            this.anims.play('leftNave' + this.numPlayer);
         } else {
             this.body.velocity.x = 0;
+            this.anims.stop('rightNave' + this.numPlayer); // puedo no especificar el nombre de la animacion sin poner nada entre parentesis
+            this.anims.stop('leftNave' + this.numPlayer); 
         }
 
         // Disparo
         if (this.teclas.disparo.isDown && this.elapsedShootTime <= 0) {
             this.elapsedShootTime = this.maxShootTime;
             this.shoot();
-            console.log("DISPARO");
+
+            //Animacion
+            this.anims.play('shootNave' + this.numPlayer);
+
+            // Temporizador para detener la animación después de 3 segundos
+            this.scene.time.delayedCall(1000, () => {
+                console.log("DISPARO");
+                this.anims.play('idleNave' + this.numPlayer);
+            }, [], this);
+
         } else {
             this.elapsedShootTime -= (dt / 1000);
+
+            if (!this.anims.isPlaying) {
+                //Animacion
+                this.anims.play('idleNave' + this.numPlayer);
+            }
         }
     }
 

@@ -17,6 +17,7 @@ export default class EnemyGen {
         this.elapsedTime;
         this.timeToAppear();
 
+
         /*  ---Evento de tiempo para hacer tu propio contador y reloj---
         this.time.addEvent({
             delay: 1000, // 1 segundo.

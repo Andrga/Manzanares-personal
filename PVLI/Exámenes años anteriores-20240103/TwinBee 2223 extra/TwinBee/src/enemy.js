@@ -36,7 +36,12 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         //Activa visibilidad
         this.setActive(true).setVisible(true);
 
+        //Velocidad del objeto
         this.body.velocity.y = 60;
+
+        
+        //Animacion
+        this.anims.play('rotingEnemy');
 
     }
 
