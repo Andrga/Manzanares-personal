@@ -16,6 +16,20 @@ export default class EnemyGen {
         // Contador aparecer enemigo
         this.elapsedTime;
         this.timeToAppear();
+
+        /*  ---Evento de tiempo para hacer tu propio contador y reloj---
+        this.time.addEvent({
+            delay: 1000, // 1 segundo.
+            callback: () => {
+                this.timeToNewEnemy--; // Disminuimos el tiempo.
+                if (this.timeToNewEnemy <= 0) {
+                    this.spawnEnemy(Phaser.Math.Between(16, this.cameras.main.width - 16), -16) // Generamos el enemigo.
+                    this.timeToNewEnemy = Phaser.Math.Between(2, 6); // Reseteamos con un tiempo aleatorio.
+                }
+            },
+            callbackScope: this, // Donde se propaga el evento
+            loop: true // Para que se haga continuamente.
+        });*/
     }
 
     update(dt) {
@@ -29,7 +43,7 @@ export default class EnemyGen {
 
         // Updates de los enemigos
         for (var i = 0; i < this.enemyPool.length; i++) {
-            this.enemyPool[i].update;
+            this.enemyPool[i].update();
         }
     }
 
@@ -41,7 +55,7 @@ export default class EnemyGen {
     // Apatece el nuevo enemigo
     enemyAppear() {
         
-        console.log(this.oldEnemy);
+        //console.log(this.oldEnemy);
         // Activar el nuevo enemigo
         this.enemyPool[this.oldEnemy].activate()
         

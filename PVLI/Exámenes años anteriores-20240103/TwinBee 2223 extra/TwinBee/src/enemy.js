@@ -22,6 +22,9 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     deactivate(){
         // Desactivacion
+        this.setPosition(0,0);
+        this.body.velocity.y = 0;
+        this.body.velocity.x = 0;
         this.setActive(false).setVisible(false);
         
     }
@@ -33,15 +36,21 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         //Activa visibilidad
         this.setActive(true).setVisible(true);
 
-        this.body.velocity.y = 50;
+        this.body.velocity.y = 60;
 
     }
 
     update(){
-        if(this.y>camaraPrincipal.worldView.bottom){
+        if(this.y> this.scene.cameras.main.worldView.bottom){
             console.log("ABAJO");
             this.deactivate();
         }
     }
-    
+
+    //Metodo para cuando colisiona con otro objeto
+    collideado(){
+        console.log("Collideado Enemy");
+        //this.body.setEnable(false);  // Desactivar completamente el cuerpo de colisión
+        this.deactivate();
+    }    
 }

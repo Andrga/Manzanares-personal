@@ -8,6 +8,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('background', './assets/images/background.png');
         this.load.image('backgroundHcont', './assets/images/background_hcontrast.png');
         this.load.image('bullet', './assets/images/bullet.png');
+        this.load.image('bell', './assets/images/green.png');
 
         // Load Spritessheets
         this.load.spritesheet('ship1', './assets/images/twinbee.png', {

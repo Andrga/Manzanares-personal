@@ -14,6 +14,7 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
 
         // Configurar las propiedades de las físicas, si es necesario
         this.body.setCollideWorldBounds(true);
+        this.body.setSize(16, 16, true); // Para que la caja de colision sea igual al sprite.
 
         // Input de teclas
         this.teclas;
@@ -31,18 +32,18 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
     update(dt) {
         // Teclas verticales
         if (this.teclas.arriba.isDown) {
-            this.body.velocity.y = -50;
+            this.body.velocity.y = -75;
         } else if (this.teclas.abajo.isDown) {
-            this.body.velocity.y = 50;
+            this.body.velocity.y = 75;
         } else {
             this.body.velocity.y = 0;
         }
 
         // Teclas horizontales
         if (this.teclas.derecha.isDown) {
-            this.body.velocity.x = 50;
+            this.body.velocity.x = 75;
         } else if (this.teclas.izquierda.isDown) {
-            this.body.velocity.x = -50;
+            this.body.velocity.x = -75;
         } else {
             this.body.velocity.x = 0;
         }
@@ -79,5 +80,29 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
                 disparo: Phaser.Input.Keyboard.KeyCodes.ENTER
             });
         }
+    }
+
+    win(){ 
+        this.scene.tweens.add({    
+            targets: this,             // El objeto que se animará
+            y: -10,                        // La posición final en el eje X
+            duration: 3000,                // Duración de la animación en milisegundos
+            ease: 'Linear',                // Función de easing (puedes cambiar a 'Ease' diferente)
+            repeat: 0        
+        })
+    }
+
+    //Metodo para cuando colisiona con otro objeto
+    collideado(){
+        console.log("collideado player");
+
+        // Desactiva al player
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
+        this.body.setEnable(false);  // Desactivar completamente el cuerpo de colisión
+        this.setActive(false).setVisible(false);
+
+        // Metodo que gestiona la perdida
+        this.scene.lose();
     }
 }
