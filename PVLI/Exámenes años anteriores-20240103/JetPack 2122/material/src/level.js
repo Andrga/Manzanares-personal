@@ -48,6 +48,7 @@ export default class Level extends Phaser.Scene {
             meteor.setActive(false).setVisible(false);
         }
 
+        // Contador para que aparezca un nuevo meteorito
         this.time.addEvent({
             delay: this.meteorCooldown, // tiempo que dura el contador
             callback: () => {       // Funcion cuando pasa el tiempo del delay
@@ -81,6 +82,9 @@ export default class Level extends Phaser.Scene {
         this.physics.add.collider(this.fuel, groundLayer);
         this.physics.add.collider(this.player, this.fuel, (player, fuel) =>
             player.addFuel(fuel)
+        );
+        this.physics.add.collider(this.player, this.meteorPool, (player, meteor) =>
+            player.golpeado()
         );
         //this.physics.add.collider(this.player, this.nave,  (player, fuel) => console.logg("ASDA"));
 
@@ -117,6 +121,14 @@ export default class Level extends Phaser.Scene {
     }
 
     lose() {
-
+        this.tweens.add({
+            targets: this.player,             // El objeto que se animará
+            //y: -80,                        // La posición final en el eje X
+            rotation: Phaser.Math.DegToRad(-90),
+            duration: 3000,                // Duración de la animación en milisegundos
+            ease: 'Linear',                // Función de easing (puedes cambiar a 'Ease' diferente)
+            repeat: 0,
+            onComplete: () => this.scene.start('MainMenu')
+        })
     }
 }

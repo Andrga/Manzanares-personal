@@ -90,6 +90,10 @@ export default class Player extends Phaser.GameObjects.Container {
         });
     }
 
+    golpeado(){
+        this.scene.lose();
+    }
+
     addFuel(fuel){
         // Anade el sprite al contenedor
         this.add([fuel]);
