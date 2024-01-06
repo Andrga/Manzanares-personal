@@ -9,14 +9,14 @@ export default class MainMenu extends Phaser.Scene {
             fontFamily: 'Pixeled',
         }).setOrigin(0.5, 0);
 
-        this.newButton(this.cameras.main.centerX, this.cameras.main.centerY , "Easy", 'white');
-        this.newButton(this.cameras.main.centerX, this.cameras.main.centerY + 20, "Normal", 'white');
-        this.newButton(this.cameras.main.centerX, this.cameras.main.centerY + 40, "Hard", 'white');
+        this.newButton(this.cameras.main.centerX, this.cameras.main.centerY , "Easy", 'white', 2, 2);
+        this.newButton(this.cameras.main.centerX, this.cameras.main.centerY + 20, "Normal", 'white', 3, 1);
+        this.newButton(this.cameras.main.centerX, this.cameras.main.centerY + 40, "Hard", 'white', 5, 0.5);
 
     }
 
     // Metodo para crear botones
-    newButton(x, y, text, color1) {
+    newButton(x, y, text, color1, comb, frec) {
         let boton = this.add.text(x,y,text,{
             fontSize: '10px',
             color: color1,
@@ -25,7 +25,7 @@ export default class MainMenu extends Phaser.Scene {
         }).setOrigin(0.5,0).setInteractive();
 
         boton.on('pointerdown', ()=>{
-            this.scene.start('Level')
+            this.scene.start('Level', {cantidad: comb, frecuencia: frec});
         });
     }
 }

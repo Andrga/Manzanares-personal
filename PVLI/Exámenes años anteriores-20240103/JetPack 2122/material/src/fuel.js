@@ -14,11 +14,19 @@ export default class Fuel extends Phaser.GameObjects.Sprite {
         // Configurar las propiedades de las físicas, si es necesario
         this.body.setCollideWorldBounds(false);
         this.body.setSize(17, 24, true); // Para que la caja de colision sea igual al sprite.
+        this.restart();
     }
 
     cogido(){
-        this.setActive(false);
+        this.body.setEnable(false);
         this.setPosition(0,0);
+    }
+
+    restart(){
+        
+        this.body.setEnable(true);
+        this.body.velocity.x = 0;
+        this.setPosition(Phaser.Math.Between(10, 200), 0);
     }
 
 }

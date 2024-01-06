@@ -40,6 +40,9 @@ export default class Player extends Phaser.GameObjects.Container {
         this.teclas;
         this.playerKeys();
 
+        // Propiedades
+        this.tienesFuel = false;
+
     }
 
     preUpdate() {
@@ -73,9 +76,9 @@ export default class Player extends Phaser.GameObjects.Container {
 
     update() {
         if (this.x <= 0) {
-            this.x = this.scene.cameras.main.width;
+            this.x = this.scene.cameras.main.width-1;
         } else if (this.x >= this.scene.cameras.main.width) {
-            this.x = 0;
+            this.x = 1;
         }
     }
 
@@ -91,5 +94,12 @@ export default class Player extends Phaser.GameObjects.Container {
         // Anade el sprite al contenedor
         this.add([fuel]);
         fuel.cogido();
+        this.tienesFuel = true;
+    }
+
+    putFuel(fuel){
+        this.remove(fuel, false); // El segundo argumento (true) destruye el objeto eliminado
+        this.tienesFuel = false;
+   
     }
 }

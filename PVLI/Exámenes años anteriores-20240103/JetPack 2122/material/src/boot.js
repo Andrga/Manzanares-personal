@@ -18,6 +18,10 @@ export default class Boot extends Phaser.Scene {
             frameWidth: 17,  // Ancho de cada frame en la hoja de sprites
             frameHeight: 24  // Altura de cada frame en la hoja de sprites
         });
+        this.load.spritesheet('meteor', './assets/sprites/meteor.png', {
+            frameWidth: 16,  // Ancho de cada frame en la hoja de sprites
+            frameHeight: 14  // Altura de cada frame en la hoja de sprites
+        });
         //this.load.spritesheet('player', './assets/sprites/jetpac.png');
     }
 
