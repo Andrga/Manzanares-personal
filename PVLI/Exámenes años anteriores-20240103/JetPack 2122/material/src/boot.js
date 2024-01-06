@@ -22,7 +22,11 @@ export default class Boot extends Phaser.Scene {
             frameWidth: 16,  // Ancho de cada frame en la hoja de sprites
             frameHeight: 14  // Altura de cada frame en la hoja de sprites
         });
-        //this.load.spritesheet('player', './assets/sprites/jetpac.png');
+        
+        // Carga el archivo de sonido en el método preload
+        this.load.audio('win', './assets/sounds/win.wav');
+        //this.load.audio('win', './assets/sounds/win.wav');
+        this.load.audio('lose', './assets/sounds/lose.wav');
     }
 
     create() {

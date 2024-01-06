@@ -26,7 +26,10 @@ window.onload = ()=>{
                 left: true,
                 right: true
             }
-        },
+        }
+        /*audio: {
+            disableWebAudio: false // Habilitar Web Audio API (predeterminado)
+        }*/
     };
 
     new Phaser.Game(config);

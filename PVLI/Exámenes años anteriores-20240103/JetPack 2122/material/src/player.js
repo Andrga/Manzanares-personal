@@ -102,8 +102,8 @@ export default class Player extends Phaser.GameObjects.Container {
     }
 
     putFuel(fuel){
-        this.remove(fuel, false); // El segundo argumento (true) destruye el objeto eliminado
         this.tienesFuel = false;
+        this.remove(fuel, false); // El segundo argumento (true) destruye el objeto eliminado
    
     }
 }

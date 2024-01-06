@@ -29,7 +29,7 @@ export default class Ship extends Phaser.GameObjects.Container {
 
         }).setOrigin(0.5, 0.5)
 
-        console.log(this.textRemains);
+        //console.log(this.textRemains);
         // Anade el sprite al contenedor
         this.add([this.shipSpr, this.textRemains]);
 

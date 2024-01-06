@@ -10,11 +10,27 @@ export default class Level extends Phaser.Scene {
 
     init(data) {
         this.maxfuel = data.cantidad;
-        this.meteorCooldown = data.frecuencia*1000;
+        this.meteorCooldown = data.frecuencia * 1000;
     }
 
     create() {
 
+        // -----Configuracion-------
+        // Setting los limites del mundo
+        this.physics.world.setBounds(0, 0, 256, 192);
+        // Aplicando el wrap
+        // this.physics.world.wrap(this.player);  // Este metodo no funciona
+
+
+
+        // -----Sonidos------
+        this.winSound = this.sound.add('win');
+        this.loseSound = this.sound.add('lose');
+        // También puedes configurar opciones como volumen, bucle, etc.
+        // this.miSonido.play({ volume: 0.5, loop: true });
+
+
+        // -----Tile Map-----
         // create the Tilemap ('tilemap' key del JSON)
         const map = this.make.tilemap({ key: 'tilemap' })
 
@@ -32,6 +48,9 @@ export default class Level extends Phaser.Scene {
         // groundLayer.setCollisionByExclusion(0, true);
         groundLayer.setCollisionBetween(1, 3); // se puede añadir tambien al map y luego especificar layer en caso necesario
 
+
+
+        // ------Objetos del juego-----
         this.player = new Player(this, 0, 0);
         // Meteoritos
         // Crear un grupo para la pool de meteoritos
@@ -58,17 +77,11 @@ export default class Level extends Phaser.Scene {
                     meteor.activate();
                 }
 
-                console.log("asda");
+                //console.log("asda");
             },
             callbackScope: this, // Donde se propaga el evento
             loop: true // Para que se haga continuamente.
         });
-
-
-        // Setting los limites del mundo
-        this.physics.world.setBounds(0, 0, 256, 192);
-        // Aplicando el wrap
-        // this.physics.world.wrap(this.player);  // Este metodo no funciona
 
         // Objeto del fuel
         this.fuel = new Fuel(this, 50, 0);
@@ -77,6 +90,9 @@ export default class Level extends Phaser.Scene {
         this.ship = new Ship(this, this.cameras.main.centerX + 20, this.cameras.main.height - 56, this.maxfuel);
         //console.log
 
+
+
+        // ------Colisiones-----
         // Añadimos el collider porque si no no colisiona
         this.physics.add.collider(this.player, groundLayer);
         this.physics.add.collider(this.fuel, groundLayer);
@@ -108,6 +124,11 @@ export default class Level extends Phaser.Scene {
 
     win() {
         this.player.setActive(false).setVisible(false);
+
+        //Sonido de victoria
+        this.winSound.play();
+
+        //Tween de salirse la nave
         this.tweens.add({
             targets: this.ship,             // El objeto que se animará
             y: -80,                        // La posición final en el eje X
@@ -118,9 +139,14 @@ export default class Level extends Phaser.Scene {
             repeat: 0,
             onComplete: () => this.scene.start('MainMenu')
         })
+
     }
 
     lose() {
+        //Sonido de perder
+        this.loseSound.play();
+
+        // Tween de muerte
         this.tweens.add({
             targets: this.player,             // El objeto que se animará
             //y: -80,                        // La posición final en el eje X
