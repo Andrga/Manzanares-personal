@@ -1,4 +1,4 @@
-export default class Bullet extends Phaser.GameObjects.Sprite {
+export default class Player extends Phaser.GameObjects.Sprite {
 
     constructor(scene, x, y, player) {
         super(scene, x, y, 'ship' + player);

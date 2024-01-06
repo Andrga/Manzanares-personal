@@ -13,7 +13,20 @@ window.onload = ()=>{
             autoCenter: Phaser.Scale.Center.CENTER_HORIZONTALLY
         },
         pixelArt: true,
-        scene: [ Boot, MainMenu, Level ]
+        scene: [ Boot, MainMenu, Level ],
+        physics: { 
+            default: 'arcade', 
+            arcade: { 
+                gravity: { y: 200 }, 
+                debug: true 
+            },
+            checkCollision: {
+                up: true,
+                down: true,
+                left: true,
+                right: true
+            }
+        },
     };
 
     new Phaser.Game(config);
