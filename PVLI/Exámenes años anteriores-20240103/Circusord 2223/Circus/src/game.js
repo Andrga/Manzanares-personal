@@ -1,6 +1,6 @@
 import Level from "./level.js";
 import Boot from "./boot.js";
-import Menu from "./menu.js";
+import Title from "./title.js";
 
 const config = {
     type: Phaser.AUTO,
@@ -23,10 +23,10 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 480 },
-            debug: false
+            debug: true
         }
     },
-    scene: [ Boot, Menu, Level ],
+    scene: [ Boot, Title, Level ],
 	title: "Examen Ordinaria 2022-2023 PVLI",
 	version: "1.0.0"
 };

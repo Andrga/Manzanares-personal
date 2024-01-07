@@ -10,6 +10,7 @@ export default class EnemyGen {
         // Crear enemigos iniciales en la pool
         for (var i = 0; i < 10; i++) {
             this.enemyPool[i] = new Enemy(scene, 0, 0);
+            //this.enemyPool.push(new Enemy...);
             this.enemyPool[i].setActive(false).setVisible(false);
         }
 

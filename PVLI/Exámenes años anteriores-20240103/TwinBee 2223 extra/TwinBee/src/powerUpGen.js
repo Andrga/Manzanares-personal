@@ -10,6 +10,7 @@ export default class PowerUpGen {
         // Crear enemigos iniciales en la pool
         for (var i = 0; i < 10; i++) {
             this.powerUpPool[i] = new PowerUp(scene, 0, 0);
+            //this.powerUpPool.push(new PowerUp...);
             this.powerUpPool[i].setActive(false).setVisible(false);
         }
 
