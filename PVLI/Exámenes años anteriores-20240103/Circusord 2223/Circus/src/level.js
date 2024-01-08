@@ -50,7 +50,8 @@ export default class Level extends Phaser.Scene {
 
         // -----Fondos-----
         this.backgrounds = [];
-        this.lastbackground = 0;
+        this.leftBackground = 0;
+        this.rightBackground = 3;
 
         for (let i = 1; i <= 4; i++) {
             // Calcula la posicion x
@@ -214,21 +215,54 @@ export default class Level extends Phaser.Scene {
     }
 
     update(t, dt) {
-        if (this.cameras.main.worldView.left >= this.backgrounds[this.lastbackground].x + this.backgrounds[this.lastbackground].width) {
-            console.log(this.lastbackground);
-            // Pone el ultimo fondo a la derecha del todo
-            this.backgrounds[this.lastbackground].x = this.backgrounds[this.backgrounds.length - this.lastbackground - 1].x + this.backgrounds[this.lastbackground].width;
-
-            // Actualizacion del last background
-            this.lastbackground++;
-            if (this.lastbackground >= this.backgrounds.length) {
-                this.lastbackground = 0;
-            }
-        }
-
+        // movimiento toroidal del fondo
+        this.torosDelFondo();
+        
         // Updatea posicion x de los textos con respecto a la camara
         this.puntText.x = this.cameras.main.worldView.left + this.cameras.main.centerX;
         this.puntMaxText.x = this.cameras.main.worldView.left + this.cameras.main.centerX;
+    }
+
+    torosDelFondo(){
+        // el toro del fondo izquierdo
+        if (this.cameras.main.worldView.left >= this.backgrounds[this.leftBackground].x + this.backgrounds[this.leftBackground].width) {
+            console.log(this.leftBackground);
+            //indice del ultimo background
+            let indice = this.leftBackground - 1;
+            if (indice < 0) { indice = 3; }
+
+            // Pone el ultimo fondo a la derecha del todo
+            this.backgrounds[this.leftBackground].x = this.backgrounds[indice].x + this.backgrounds[this.leftBackground].width;
+
+            // Actualizacion del last background
+            this.leftBackground++;
+            this.rightBackground++;
+            if (this.leftBackground >= this.backgrounds.length) {
+                this.leftBackground = 0;
+            } if (this.rightBackground >= this.backgrounds.length) {
+                this.rightBackground = 0;
+            }
+        }
+
+        // el toro del fondo derecho
+        if (this.cameras.main.worldView.left < this.backgrounds[this.leftBackground].x) {
+            console.log("toro derecho");
+            //indice del ultimo background
+            let indice = this.rightBackground;
+            if (indice < 0) { indice = 3; }
+
+            // Pone el ultimo fondo a la derecha del todo
+            this.backgrounds[this.rightBackground].x = this.backgrounds[this.leftBackground].x - this.backgrounds[this.leftBackground].width;
+
+            // Actualizacion del last background
+            this.rightBackground--;
+            this.leftBackground--;
+            if (this.rightBackground < 0) {
+                this.rightBackground = this.backgrounds.length - 1;
+            } if (this.leftBackground < 0) {
+                this.leftBackground = this.backgrounds.length - 1;
+            }
+        }
     }
 
     updatePunt() {
