@@ -14,7 +14,7 @@ export default class Player extends Phaser.GameObjects.Container {
         //-----Añadir sprites al contenedor-----
         this.lionSpr = this.scene.physics.add.sprite(0, 120, 'lion').setScale(3, 3).setOrigin(0, 1).setImmovable(true);
         this.lionSpr.body.allowGravity = false; // no le afecta la gravedad
-        this.clownSpr = this.scene.physics.add.sprite(0, 0, 'clown').setScale(3, 3).setOrigin(0, 0).setImmovable(true);
+        this.clownSpr = this.scene.physics.add.sprite(0, 0, 'clown').setScale(3, 3).setOrigin(0, 1).setImmovable(true);
         this.clownSpr.body.allowGravity = false; // no le afecta la gravedad
 
         // Anade el sprite al contenedor
@@ -37,9 +37,9 @@ export default class Player extends Phaser.GameObjects.Container {
         // Teclas horizontales
         if(this.floor){
             if (this.teclas.derecha.isDown) {
-                this.body.velocity.x = 120;
+                this.body.velocity.x = 520;
             } else if (this.teclas.izquierda.isDown) {
-                this.body.velocity.x = -120;
+                this.body.velocity.x = -100;
             } else {
                 this.body.velocity.x = 0;
             }
@@ -66,8 +66,16 @@ export default class Player extends Phaser.GameObjects.Container {
         });
     }
 
-    playerCollisions(objeto){
+    die(){
+        this.body.enable = false;
+        // Animacion de morir
 
     }
+    win(x,y){
+        this.body.enable = false;
+        this.setPosition(x,0);
+        this.clownSpr.setPosition(0,y)
+        // Animacion de ganar
 
+    }
 }

@@ -57,4 +57,10 @@ export default class Ring extends Phaser.Physics.Arcade.Sprite {
             this.deactivate();
         }
     }
+
+    stop(){
+        this.body.velocity.x = 0;
+        this.body.enable = false;
+
+    }
 }
