@@ -1,4 +1,5 @@
 import Player from "./player.js";
+import Ring from "./ring.js"
 
 export default class Level extends Phaser.Scene {
     constructor() {
@@ -36,14 +37,15 @@ export default class Level extends Phaser.Scene {
                 //console.log(i-1);
             }
         }
-        
+
         console.log(this.backgrounds);
+
         // -----Suelo-----
         // Crear un objeto this.floor para dibujar el cuadrado
         this.floor = this.add.graphics();
 
         // Dibujar el cuadrado
-        this.floor.fillStyle('0x000000').fillRect(0, 0, (this.goal*800)/10, 120).generateTexture();
+        this.floor.fillStyle('0x000000')//.fillRect(0, 0, (this.goal * 800) / 10, 120).generateTexture();
         this.floor.setPosition(0, this.cameras.main.height - 120)
 
         // Habilitar físicas en el graphic
@@ -52,7 +54,7 @@ export default class Level extends Phaser.Scene {
         // Configurar el cuerpo del sprite como invisible
         //this.floor.body.enable = false;
 
-        this.floor.body.setSize((this.goal*800)/10, 260).setImmovable(true);
+        this.floor.body.setSize((this.goal * 800) / 10, 260).setImmovable(true);
         //this.floor.body.setCollideWorldBounds(true);
         this.floor.body.allowGravity = false; // no le afecta la gravedad
         //cube.body.setBounce(1, 1);
@@ -62,6 +64,38 @@ export default class Level extends Phaser.Scene {
         this.player = new Player(this, 50, this.cameras.main.height - 304);
 
         console.log(this.player.x + "/" + this.player.y)
+
+        // -----Pool de aros-----
+        this.ringPool = this.physics.add.group({
+            classType: Ring, // Clase de los elementos
+            maxSize: 10, // Maximo de elementos
+            runChildUpdate: true // En true ejecuta los metodos updates de los elementos
+        });
+
+        // Crear aros iniciales en la pool
+        for (var i = 0; i < 10; i++) {
+            let ring = new Ring(this, 0,0);
+            ring.body.allowGravity = false;
+            this.ringPool.add(ring);
+            ring.setActive(false).setVisible(false);
+        }
+
+        // Contador para que aparezca un nuevo ringito
+        this.time.addEvent({
+            delay: 5000, // tiempo que dura el contador
+            callback: () => {       // Funcion cuando pasa el tiempo del delay
+                //coge una bala de la pool
+                let ring = this.ringPool.get();
+                if (ring) {
+                    ring.activate();
+                    console.log(ring);
+                }
+
+                //console.log("asda");
+            },
+            callbackScope: this, // Donde se propaga el evento
+            loop: true // Para que se haga continuamente.
+        });
 
         //-----Colisiones-----
         this.physics.add.collider(this.player, this.floor, () => {
@@ -76,9 +110,9 @@ export default class Level extends Phaser.Scene {
 
     update() {
         if (this.cameras.main.worldView.left >= this.backgrounds[this.lastbackground].x + this.backgrounds[this.lastbackground].width) {
-            console.log(this.backgrounds.length - this.lastbackground-1);
+            console.log(this.backgrounds.length - this.lastbackground - 1);
             // Pone el ultimo fondo a la derecha del todo
-            this.backgrounds[this.lastbackground].x = this.backgrounds[this.backgrounds.length - this.lastbackground-1].x + this.backgrounds[this.lastbackground].width;
+            this.backgrounds[this.lastbackground].x = this.backgrounds[this.backgrounds.length - this.lastbackground - 1].x + this.backgrounds[this.lastbackground].width;
 
             // Actualizacion del last background
             this.lastbackground++;

@@ -19,6 +19,14 @@ export default class Boot extends Phaser.Scene {
             frameWidth: 16,  // Ancho de cada frame en la hoja de sprites
             frameHeight: 24  // Altura de cada frame en la hoja de sprites
         });
+        this.load.spritesheet('ring', './assets/sprites/ring.png', {
+            frameWidth: 26,  // Ancho de cada frame en la hoja de sprites
+            frameHeight: 80  // Altura de cada frame en la hoja de sprites
+        });
+        this.load.spritesheet('fire', './assets/sprites/fire.png', {
+            frameWidth: 25,  // Ancho de cada frame en la hoja de sprites
+            frameHeight: 31  // Altura de cada frame en la hoja de sprites
+        });
     }
 
     create(){

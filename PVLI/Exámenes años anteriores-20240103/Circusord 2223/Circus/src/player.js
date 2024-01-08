@@ -8,12 +8,13 @@ export default class Player extends Phaser.GameObjects.Container {
 
         // Configurar las propiedades de las físicas, si es necesario
         this.body.setCollideWorldBounds(false);
-        this.body.setSize(144, 64, true); // Para que la caja de colision sea igual al sprite.
+        this.body.setSize(108, 120, true); // Para que la caja de colision sea igual al sprite.
 
 
         //-----Añadir sprites al contenedor-----
-        this.lionSpr = this.scene.add.sprite(0, 0, 'lion').setScale(4, 4).setOrigin(0, 0);
-        this.clownSpr = this.scene.physics.add.sprite(0, 0, 'clown').setScale(4, 4).setOrigin(0, 0).setImmovable(true);
+        this.lionSpr = this.scene.physics.add.sprite(0, 120, 'lion').setScale(3, 3).setOrigin(0, 1).setImmovable(true);
+        this.lionSpr.body.allowGravity = false; // no le afecta la gravedad
+        this.clownSpr = this.scene.physics.add.sprite(0, 0, 'clown').setScale(3, 3).setOrigin(0, 0).setImmovable(true);
         this.clownSpr.body.allowGravity = false; // no le afecta la gravedad
 
         // Anade el sprite al contenedor
@@ -36,9 +37,9 @@ export default class Player extends Phaser.GameObjects.Container {
         // Teclas horizontales
         if(this.floor){
             if (this.teclas.derecha.isDown) {
-                this.body.velocity.x = 100;
+                this.body.velocity.x = 120;
             } else if (this.teclas.izquierda.isDown) {
-                this.body.velocity.x = -100;
+                this.body.velocity.x = -120;
             } else {
                 this.body.velocity.x = 0;
             }
@@ -63,6 +64,10 @@ export default class Player extends Phaser.GameObjects.Container {
             derecha: Phaser.Input.Keyboard.KeyCodes.RIGHT,
             izquierda: Phaser.Input.Keyboard.KeyCodes.LEFT,
         });
+    }
+
+    playerCollisions(objeto){
+
     }
 
 }
