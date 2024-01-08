@@ -22,7 +22,7 @@ export default class Level extends Phaser.Scene {
             if (i - 1 > 0) {
                 //console.log("no es cero")
                 //console.log(this.backgrounds[i - 2]);
-                x = this.backgrounds[i - 2].width;
+                x = this.backgrounds[i - 2].x + this.backgrounds[i - 2].width;
             }
 
 
