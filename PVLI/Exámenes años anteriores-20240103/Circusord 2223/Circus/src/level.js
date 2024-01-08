@@ -72,8 +72,6 @@ export default class Level extends Phaser.Scene {
             }
 
             // -----actualizacion de posiciones de los fondos en el update-----
-
-
         }
         
 
@@ -258,7 +256,7 @@ export default class Level extends Phaser.Scene {
             // Actualizacion del fondo de la derecha e izquierda
             this.rightBackground--;
             this.leftBackground--;
-            
+
             //Si los indices se salen de los limites se resetean
             if (this.rightBackground < 0) {
                 this.rightBackground = this.backgrounds.length - 1;
