@@ -49,45 +49,45 @@ export default class Level extends Phaser.Scene {
 
 
         // -----Fondos-----
-        this.backgrounds = [];
-        this.leftBackground = 0;
-        this.rightBackground = 3;
+        this.backgrounds = [];      // Array de fondos
+        this.leftBackground = 0;    // Fondo de la izquieda
+        this.rightBackground = 3;   // Fondo de la derecha
 
         for (let i = 1; i <= 4; i++) {
             // Calcula la posicion x
             let x = 0;
-            //console.log(i - 1);
+            // x es 0 si el fondo que se esta creando es 0, si no se hace el if
             if (i - 1 > 0) {
-                //console.log("no es cero")
-                //console.log(this.backgrounds[i - 2]);
-                x = this.backgrounds[i - 2].x + this.backgrounds[i - 2].width;
+                x = this.backgrounds[i - 2].x + this.backgrounds[i - 2].width;  // como i-1 es el fondo que estamos creando, cogemos la posicion x del i-2 que es el anterior, 
+                                                                                //y le sumamos el ancho de una imagen, para ver la posicion x del actual
             }
 
-
+            // si i es par entonces se coloca el fondo 2, si no el fondo 1
             if (i % 2 === 0) {
                 const background = (this.add.image(x, this.cameras.main.height, 'background2').setOrigin(0, 1));
-                this.backgrounds.push(background);
-                //console.log(i-1);
+                this.backgrounds.push(background); // añade el background al array
             } else {
                 const background = (this.add.image(x, this.cameras.main.height, 'background').setOrigin(0, 1));
-                this.backgrounds.push(background);
-                //console.log(i-1);
+                this.backgrounds.push(background); // añade el background al array
             }
+
+            // -----actualizacion de posiciones de los fondos en el update-----
+
+
         }
-        //console.log(this.backgrounds);
+        
 
-        this.fuegitos = [];
 
+        // -----Marcas de metros-----
         for (let i = 0; i <= this.goal; i += 10) {
-            // -----Marcas de metros-----
             // Grafico de marca
             let mark = this.add.graphics();
 
             // Configurar las propiedades del objeto mark
             mark.fillStyle(0x000000, 1); // Relleno negro con opacidad 1
-            mark.fillRect(0, 0, 100, 50); // Rectángulo en la posición (0, 0) con tamaño 100*50
-            mark.lineStyle(4, 0xFF0000, 1); // Línea roja con grosor 4 y opacidad 1
-            mark.strokeRect(0, 0, 100, 50); // Contorno del rectángulo en la posición (0, 0) con tamaño 100*50
+            mark.fillRect(0, 0, 100, 50); // Rectangulo en la posicion (0, 0) con size 100*50
+            mark.lineStyle(4, 0xFF0000, 1); // Linea roja con grosor 4 y opacidad 1
+            mark.strokeRect(0, 0, 100, 50); // Contorno del rectangulo en la posicion (0, 0) con size 100*50
             mark.setPosition(80 * i, this.cameras.main.height - 100); //setea la posicion
 
             // Add el texto
@@ -98,18 +98,7 @@ export default class Level extends Phaser.Scene {
 
             }).setOrigin(0, 0).setPosition(80 * i + 5, this.cameras.main.height - 95)
             //console.log(mark.x + "/" + mark.y)
-
-
-            // -----Fueguitos-----
-            if (i >= 30) {
-                let fir = this.physics.add.sprite(80 * i, this.cameras.main.height - 120, 'fire').setScale(3, 3).setOrigin(0, 1).setImmovable(true).setSize()
-                fir.body.allowGravity = false; // no le afecta la gravedad
-
-                this.fuegitos.push(fir);
-            }
-
         }
-
 
         // -----Suelo-----
         // Crear un objeto this.floor para dibujar el cuadrado
@@ -128,37 +117,27 @@ export default class Level extends Phaser.Scene {
         this.floor.body.setSize((this.goal * 800) / 10, 260).setImmovable(true);
         //this.floor.body.setCollideWorldBounds(true);
         this.floor.body.allowGravity = false; // no le afecta la gravedad
-        //cube.body.setBounce(1, 1);
-        //cube.body.setVelocity(100, 200);
-
-
-
+        //cube.body.setBounce(1, 1); // Objeto rebota
+        //cube.body.setVelocity(100, 200); // Settea velocidad: x = 100, y = 200
+        
+        
+        
         // -----Player-----
         this.player = new Player(this, 50, this.cameras.main.height - 304);
-
+        
         console.log(this.player.x + "/" + this.player.y)
-
+        
         // Iniciar el seguimiento de la cámara al jugador
         this.cameras.main.startFollow(this.player, true, 1, 0, -(this.cameras.main.width / 2 - 50), 76);
         //this.cameras.main.setFollowOffset(0, 0); // offset a parte, esta puesto en el startfollow (Desplazamiento en el eje Y (0 en este caso))
+        
 
+        // -----Setteo de obstaculos----
+        // Array de fuegos
+        this.fuegitos = [];
 
-
-        // -----Pool de aros-----
-        this.ringPool = this.physics.add.group({
-            classType: Ring, // Clase de los elementos
-            maxSize: 10, // Maximo de elementos
-            runChildUpdate: true // En true ejecuta los metodos updates de los elementos
-        });
-
-        // Crear aros iniciales en la pool
-        for (var i = 0; i < 10; i++) {
-            let ring = new Ring(this, 0, 0);
-            ring.body.allowGravity = false;
-            this.ringPool.add(ring);
-            ring.setActive(false).setVisible(false);
-        }
-
+        this.settingObstacles();
+        
         // Contador para que aparezca un nuevo ringito
         this.time.addEvent({
             delay: 5000, // tiempo que dura el contador
@@ -175,7 +154,6 @@ export default class Level extends Phaser.Scene {
             callbackScope: this, // Donde se propaga el evento
             loop: true // Para que se haga continuamente.
         });
-
 
 
         //-----Colisiones-----
@@ -213,30 +191,56 @@ export default class Level extends Phaser.Scene {
 
         }).setOrigin(0.5, 0.5);
     }
+    
+    settingObstacles(){
+
+        // -----Fuegos-----
+        for (let i = 3; i <= (this.goal/10)-1; i ++) {
+            let fir = this.physics.add.sprite(800 * i, this.cameras.main.height - 120, 'fire').setScale(3, 3).setOrigin(0, 1).setImmovable(true).setSize()
+            fir.body.allowGravity = false; // no le afecta la gravedad
+
+            fir.anims.play('fireAnim'); // Ponemos la animacion del fuego.
+            this.fuegitos.push(fir);
+        }
+
+        // -----Pool de aros-----
+        this.ringPool = this.physics.add.group({
+            classType: Ring, // Clase de los elementos
+            maxSize: 10, // Maximo de elementos
+            runChildUpdate: true // En true ejecuta los metodos updates de los elementos
+        });
+
+        // Crear aros iniciales en la pool
+        for (var i = 0; i < 10; i++) {
+            let ring = new Ring(this, 0, 0);
+            ring.body.allowGravity = false;
+            this.ringPool.add(ring);
+            ring.setActive(false).setVisible(false);
+        }
+    }
 
     update(t, dt) {
         // movimiento toroidal del fondo
         this.torosDelFondo();
-        
+
         // Updatea posicion x de los textos con respecto a la camara
         this.puntText.x = this.cameras.main.worldView.left + this.cameras.main.centerX;
         this.puntMaxText.x = this.cameras.main.worldView.left + this.cameras.main.centerX;
     }
 
-    torosDelFondo(){
-        // el toro del fondo izquierdo
+    torosDelFondo() {
+        // si la posicion mas a la izquierda que ve la camara es mayor o igual que la posicion x del fondo mas a la izquierda + el ancho de un fondo.
+        // (es decir, el fondo de mas a la izquierda se sale de pantalla) el fondo de la izquierda se pone a la derecha
         if (this.cameras.main.worldView.left >= this.backgrounds[this.leftBackground].x + this.backgrounds[this.leftBackground].width) {
-            console.log(this.leftBackground);
-            //indice del ultimo background
-            let indice = this.leftBackground - 1;
-            if (indice < 0) { indice = 3; }
 
-            // Pone el ultimo fondo a la derecha del todo
-            this.backgrounds[this.leftBackground].x = this.backgrounds[indice].x + this.backgrounds[this.leftBackground].width;
+            // Pone el fondo de la izquierda a la derecha del fondo mas a la derecha
+            this.backgrounds[this.leftBackground].x = this.backgrounds[this.rightBackground].x + this.backgrounds[this.leftBackground].width;
 
-            // Actualizacion del last background
+            // Actualizacion del fondo de la derecha e izquierda
             this.leftBackground++;
             this.rightBackground++;
+
+            //Si los indices se salen de los limites se resetean
             if (this.leftBackground >= this.backgrounds.length) {
                 this.leftBackground = 0;
             } if (this.rightBackground >= this.backgrounds.length) {
@@ -244,19 +248,18 @@ export default class Level extends Phaser.Scene {
             }
         }
 
-        // el toro del fondo derecho
+        // si la posicion mas a la izquierda que ve la camara es menor que la posicion x del fondo mas a la izquierda.
+        // (es decir, el limite del fondo de la izquierda se ve en pantalla) el fondo de la derecha se pone a la izquierda
         if (this.cameras.main.worldView.left < this.backgrounds[this.leftBackground].x) {
-            console.log("toro derecho");
-            //indice del ultimo background
-            let indice = this.rightBackground;
-            if (indice < 0) { indice = 3; }
-
-            // Pone el ultimo fondo a la derecha del todo
+            
+            // Pone el fondo de la derecha a la izquierda del fondo mas a la izquierda
             this.backgrounds[this.rightBackground].x = this.backgrounds[this.leftBackground].x - this.backgrounds[this.leftBackground].width;
 
-            // Actualizacion del last background
+            // Actualizacion del fondo de la derecha e izquierda
             this.rightBackground--;
             this.leftBackground--;
+            
+            //Si los indices se salen de los limites se resetean
             if (this.rightBackground < 0) {
                 this.rightBackground = this.backgrounds.length - 1;
             } if (this.leftBackground < 0) {

@@ -24,6 +24,9 @@ export default class Ring extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.add.existing(this); // Lo metemos en la escena.
 
+        // Animacion del anillo
+        this.anims.play('ringAnim'); // Ponemos la animacion del aro.
+
     }
 
     deactivate(){
