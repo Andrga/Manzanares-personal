@@ -13,7 +13,7 @@ export default class Title extends Phaser.Scene {
             strokeThickness: 5 //grosor del delineado
         }).setOrigin(0.5, 0);
 
-        this.newButton(this.cameras.main.centerX, this.cameras.main.centerY + 70, "Play", 'blue', 'white');
+        this.newButton(this.cameras.main.centerX, this.cameras.main.centerY, "Play", 'blue', 'white');
 
     }
 

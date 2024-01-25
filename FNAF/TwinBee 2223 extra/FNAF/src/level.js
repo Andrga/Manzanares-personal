@@ -9,10 +9,11 @@ export default class Level extends Phaser.Scene {
     }
 
     create() {
-        this.add.image('backgroundHcont');
+        this.add.image(0,0, 'backgroundHcont');
      }
 
     update(t, dt) {
+        
 
     }
 }
