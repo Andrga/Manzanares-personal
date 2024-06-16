@@ -19,6 +19,9 @@
     <Filter Include="Archivos de origen\Tema1">
       <UniqueIdentifier>{2138855e-daaa-469c-8658-66a7a761c20c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de origen\Tema2">
+      <UniqueIdentifier>{d1b12586-eb35-4bb1-83f8-8063c014ffe6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EDA Remains.cpp">
@@ -53,6 +56,15 @@
     </ClCompile>
     <ClCompile Include="Tema1-6.cpp">
       <Filter>Archivos de origen\Tema1</Filter>
+    </ClCompile>
+    <ClCompile Include="Tema1-7.cpp">
+      <Filter>Archivos de origen\Tema1</Filter>
+    </ClCompile>
+    <ClCompile Include="Tema2-1.cpp">
+      <Filter>Archivos de origen\Tema2</Filter>
+    </ClCompile>
+    <ClCompile Include="Tema2-2.cpp">
+      <Filter>Archivos de origen\Tema2</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

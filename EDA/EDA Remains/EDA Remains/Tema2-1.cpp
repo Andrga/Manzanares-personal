@@ -5,52 +5,44 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <vector>
 using namespace std;
 /*
+int complementarioDigito(int n) {
+	return 9 - n;
+}
+
 // función que resuelve el problema
-void resolver(const vector<int>& v, int a, int& min, int& max) {
-	int  cantMax = 0, cantAct = 0;
-
-	for (int i = 0; i < v.size(); i++)
-	{
-		//compara si el edificio es de altura correcta y suma uno a la cadena
-		if (v[i] > a) {
-			cantAct++;
-		}
-		else
-		{
-			cantAct = 0;
-		}
-
-		//si la cadena actual es mayor a la guardada actualiza la guardada como la actual
-		if (cantAct > cantMax) {
-			cantMax = cantAct;
-
-			min = i - cantMax + 1;
-			max = i;
-		}
+int complementarios(int n) {
+	if (n <= 9) {
+		return complementarioDigito(n);
 	}
+	//calculo el complementario
+	int comp = complementarios(n / 10);
+	//reordeno el complementario
+	return (comp * 10) + complementarioDigito(n % 10);
+}
+
+pair<int, int> inverso(int n) {
+	if (n <= 9) {
+		return { complementarioDigito(n),10 };
+	}
+	//calculo el complementario
+	auto result = inverso(n / 10);
+	int comp = result.first;
+	int pos = result.second;
+	//reordeno el complementario
+	return { (complementarioDigito(n % 10) * pos) + (comp),pos * 10 };
 }
 
 // Resuelve un caso de prueba, leyendo de la entrada la
 // configuración, y escribiendo la respuesta
 void resuelveCaso() {
 	// leer los datos de la entrada
-	int n, a, min = 0, max = 0;
-	cin >> n >> a;
+	int n;
+	cin >> n;
 
-	// vector de datos
-	vector<int> v(n);
-
-	for (int& e : v) {
-		cin >> e;
-	}
-
-
-	resolver(v, a, min, max);
 	// escribir sol
-	cout << min << " " << max << endl;
+	cout << complementarios(n) << " " << inverso(n).first << endl;
 
 }
 
