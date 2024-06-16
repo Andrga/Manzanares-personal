@@ -9,16 +9,20 @@
 using namespace std;
 
 // función que resuelve el problema
-vector<int> resolver(const vector<int>& datos) {
+void resolver(vector<long long int>& datos) {
+	int pares = 0;
 
-	for (int i = 0; i < datos.size(); i++)
+	for (unsigned int i = 0; i < datos.size(); i++)
 	{
-		if (datos[i] % 2 != 0)
+		if (datos[i] % 2 == 0)
 		{
-
+			datos[pares] = datos[i];
+			pares++;
 		}
 	}
 
+
+	datos.resize(pares);
 }
 
 // Resuelve un caso de prueba, leyendo de la entrada la
@@ -29,15 +33,20 @@ void resuelveCaso() {
 	//numero de casos
 	cin >> n;
 
-	vector<int> v(n);
+	vector<long long int> v(n);
+	for (int i = 0; i < v.size(); i++)
+	{
+		cin >> v[i];
+	}
 
 	resolver(v);
+
 	// escribir sol
 	for (int i = 0; i < v.size(); i++)
 	{
-		cout << v[i];
+		cout << v[i]<<" ";
 	}
-
+	cout << endl;
 }
 
 int main() {
