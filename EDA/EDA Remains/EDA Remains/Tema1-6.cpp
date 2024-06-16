@@ -7,46 +7,51 @@
 #include <fstream>
 #include <vector>
 using namespace std;
-/*
-// función que resuelve el problema
-void resolver(vector<long long int>& datos) {
-	int pares = 0;
 
-	for (unsigned int i = 0; i < datos.size(); i++)
+// función que resuelve el problema
+void resolver(const vector<int>& v, int a, int& min, int& max) {
+	int  cantMax = 0, cantAct = 0;
+
+	for (int i = 0; i < v.size(); i++)
 	{
-		if (datos[i] % 2 == 0)
+		//compara si el edificio es de altura correcta y suma uno a la cadena
+		if (v[i] > a) {
+			cantAct++;
+		}
+		else
 		{
-			datos[pares] = datos[i];
-			pares++;
+			cantAct = 0;
+		}
+
+		//si la cadena actual es mayor a la guardada actualiza la guardada como la actual
+		if (cantAct > cantMax) {
+			cantMax = cantAct;
+
+			min = i - cantMax + 1;
+			max = i;
 		}
 	}
-
-
-	datos.resize(pares);
 }
 
 // Resuelve un caso de prueba, leyendo de la entrada la
 // configuración, y escribiendo la respuesta
 void resuelveCaso() {
 	// leer los datos de la entrada
-	int n;
-	//numero de casos
-	cin >> n;
+	int n, a, min = 0, max = 0;
+	cin >> n >> a;
 
-	vector<long long int> v(n);
-	for (int i = 0; i < v.size(); i++)
-	{
-		cin >> v[i];
+	// vector de datos
+	vector<int> v(n);
+
+	for (int& e : v) {
+		cin >> e;
 	}
 
-	resolver(v);
 
+	resolver(v, a, min, max);
 	// escribir sol
-	for (int i = 0; i < v.size(); i++)
-	{
-		cout << v[i]<<" ";
-	}
-	cout << endl;
+	cout << min << " " << max << endl;
+
 }
 
 int main() {
@@ -71,4 +76,4 @@ int main() {
 #endif
 
 	return 0;
-}*/
+}

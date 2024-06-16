@@ -51,5 +51,8 @@
     <ClCompile Include="Tema1-5.cpp">
       <Filter>Archivos de origen\Tema1</Filter>
     </ClCompile>
+    <ClCompile Include="Tema1-6.cpp">
+      <Filter>Archivos de origen\Tema1</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

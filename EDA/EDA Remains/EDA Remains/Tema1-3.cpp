@@ -1,58 +1,52 @@
 ﻿// Nombre del alumno .....
 // Usuario del Juez ......
-
-
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <vector>
 /*
-// función que resuelve el problema
-bool resolver(std::vector<int>& datos, int p, int n) {
-	if (p == n - 1)
-		return true;
+#include <iostream>
+#include <vector>
+#include <fstream>
 
-	int maxIzq = 0, minDer = datos[p + 1];
+using namespace std;
 
-	// maximo por la izquierda
-	for (int i = 0; i <= p; i++)
+// Función que verifica si el vector está bien dividido.
+bool estaBienDividido(const vector<int>& vec, int p) {
+	bool div = true;
+	int maxIzquierda = vec[0];
+	for (int i = 1; i <= p; ++i) {
+		if (vec[i] > maxIzquierda) {
+			maxIzquierda = vec[i];
+		}
+	}
+	int i = p + 1;
+	while (div && i < vec.size())
 	{
-		if (maxIzq <= datos[i])
-			maxIzq = datos[i];
+		if (vec[i] <= maxIzquierda) {
+			div = false;
+		}
+		i++;
 	}
 
-	//minimo por la derecha
-	for (int i = n - 1; i > p; i--)
-	{
-		if (minDer >= datos[i])
-			minDer = datos[i];
-	}
-
-	return maxIzq < minDer;
+	return div;
 }
 
-// Resuelve un caso de prueba, leyendo de la entrada la
-// configuración, y escribiendo la respuesta
-void resuelveCaso() {
-	// leer los datos de la entrada
-	int n = 0, p = 0;
+bool resuelveCaso() {
+	int n, p;
+	cin >> n >> p;
 
-	std::cin >> n >> p;
+	if (!cin) return false;
 
-	//vector de datos
-	std::vector<int> datos(n);
-
-	//guarda los datos en el vector
+	vector<int> vec(n);
 	for (int i = 0; i < n; ++i) {
-		std::cin >> datos[i];
+		cin >> vec[i];
 	}
 
-	if (resolver(datos, p, n)) {
-		std::cout << "SI" << std::endl;
+	if (estaBienDividido(vec, p)) {
+		cout << "SI" << endl;
 	}
 	else {
-		std::cout << "NO" << std::endl;
+		cout << "NO" << endl;
 	}
+
+	return true;
 }
 
 int main() {
@@ -60,15 +54,13 @@ int main() {
 	// Comentar para acepta el reto
 #ifndef DOMJUDGE
 	std::ifstream in("datos.txt");
-	auto cinbuf = std::cin.rdbuf(in.rdbuf()); //save old buf and redirect std::cin to casos.txt
+	auto cinbuf = std::cin.rdbuf(in.rdbuf()); // save old buf and redirect std::cin to datos.txt
 #endif 
-
 
 	int numCasos;
 	std::cin >> numCasos;
 	for (int i = 0; i < numCasos; ++i)
 		resuelveCaso();
-
 
 	// Para restablecer entrada. Comentar para acepta el reto
 #ifndef DOMJUDGE // para dejar todo como estaba al principio
@@ -77,4 +69,5 @@ int main() {
 #endif
 
 	return 0;
-}*/
+}
+*/
