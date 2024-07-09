@@ -8,58 +8,49 @@
 #include <vector>
 using namespace std;
 /*
-bool parcialmenteOrdenado(const vector<int>& v, int ini, int fin, int& min, int& max) {
+bool comprobar(const vector<int>& v, int k, int ini, int fin) {
 	int n = fin - ini;
-	//casos base:
-	// si solo hay un elemento el array esta ordenado
+
+	// caso base n=1
 	if (n == 1)
 		return true;
-	// si hay dos elementos y el de la izquierda es menor o igual que el de la derecha, esta ordenado
+	// caso base n=2
 	if (n == 2) {
-		min = v[ini];
-		max = v[ini + 1];
-		return min <= max;
+		return (abs(v[ini + 1] - v[ini]) >= k);
 	}
 
-	int mitad = (ini + fin) / 2;
-	int minI, minD, maxI, maxD;
-	bool ordIzq = parcialmenteOrdenado(v, ini, mitad, minI, maxI),
-		ordDer = parcialmenteOrdenado(v, mitad, fin, minD, maxD);
+	int mitad = (fin + ini) / 2;
+	bool dispIzq = comprobar(v, k, ini, mitad),
+		dispDer = comprobar(v, k, mitad, fin);
+	int dif = abs(v[fin - 1] - v[ini]);
 
-	min = std::min(minI, minD);
-	max = std::max(maxI, maxD);
-
-	return ordIzq && ordDer && (minI <= minD) && (maxI <= maxD);
-
-
+	return  dispIzq && dispDer && dif >= k;
 }
 
 // función que resuelve el problema
-bool resolver(vector<int>& v) {
-	int min, max;
+bool resolver(const vector<int>& v, int k) {
 
-	return parcialmenteOrdenado(v, 0, v.size(), min, max);
+	return comprobar(v, k, 0, v.size());
 }
 
 // Resuelve un caso de prueba, leyendo de la entrada la
 // configuración, y escribiendo la respuesta
 bool resuelveCaso() {
 	// leer los datos de la entrada
-	int c;
-	cin >> c;
-	if (c == 0)
-		return false;
-	vector<int> v;
+	int n, k;
+	cin >> n >> k;
 
-	//guarda los datos en el vector
-	while (c != 0)
-	{
-		v.push_back(c);
-		cin >> c;
+	if (!std::cin)
+		return false;
+
+
+	vector<int> v(n);
+	for (int& e : v) {
+		cin >> e;
 	}
 
 	//Escribe solucion
-	resolver(v) ? cout << "SI\n" : cout << "NO\n";
+	resolver(v, k) ? cout << "SI\n" : cout << "NO\n";
 
 	return true;
 
@@ -85,5 +76,4 @@ int main() {
 #endif
 
 	return 0;
-}
-*/
+}*/

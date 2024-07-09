@@ -8,55 +8,50 @@
 #include <vector>
 using namespace std;
 /*
-bool parcialmenteOrdenado(const vector<int>& v, int ini, int fin, int& min, int& max) {
+bool caucasico(const vector<int>& v, int ini, int fin, int& npar) {
+	// longitud vector
 	int n = fin - ini;
-	//casos base:
-	// si solo hay un elemento el array esta ordenado
-	if (n == 1)
+	//casos base
+	// si solo hay un elemento es caucasico y devuelve si es par o no
+	if (n == 1) {
+		if (v[ini] % 2 == 0)
+			npar = 1;
+		else
+			npar = 0;
+
 		return true;
-	// si hay dos elementos y el de la izquierda es menor o igual que el de la derecha, esta ordenado
-	if (n == 2) {
-		min = v[ini];
-		max = v[ini + 1];
-		return min <= max;
 	}
 
-	int mitad = (ini + fin) / 2;
-	int minI, minD, maxI, maxD;
-	bool ordIzq = parcialmenteOrdenado(v, ini, mitad, minI, maxI),
-		ordDer = parcialmenteOrdenado(v, mitad, fin, minD, maxD);
+	int mitad = (fin + ini) / 2,
+		nparIzq, nparDer;
+	bool
+		caucasicoIzq = caucasico(v, ini, mitad, nparIzq),
+		caucasicoDer = caucasico(v, mitad, fin, nparDer);
+	npar = nparDer + nparIzq;
 
-	min = std::min(minI, minD);
-	max = std::max(maxI, maxD);
-
-	return ordIzq && ordDer && (minI <= minD) && (maxI <= maxD);
-
-
+	return caucasicoIzq && caucasicoDer && abs(nparDer - nparIzq) <= 2;
 }
 
-// función que resuelve el problema
-bool resolver(vector<int>& v) {
-	int min, max;
 
-	return parcialmenteOrdenado(v, 0, v.size(), min, max);
+// función que resuelve el problema
+bool resolver(const vector<int>& v) {
+	int npar = 0;
+
+	return caucasico(v, 0, v.size(), npar);
 }
 
 // Resuelve un caso de prueba, leyendo de la entrada la
 // configuración, y escribiendo la respuesta
 bool resuelveCaso() {
 	// leer los datos de la entrada
-	int c;
-	cin >> c;
-	if (c == 0)
+	int n;
+	cin >> n;
+	if (n == 0)
 		return false;
-	vector<int> v;
 
-	//guarda los datos en el vector
-	while (c != 0)
-	{
-		v.push_back(c);
-		cin >> c;
-	}
+	vector<int> v(n);
+	for (int& e : v)
+		cin >> e;
 
 	//Escribe solucion
 	resolver(v) ? cout << "SI\n" : cout << "NO\n";
